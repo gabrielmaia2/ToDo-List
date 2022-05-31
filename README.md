@@ -8,5 +8,4 @@ Funcionalidades:
 - Adicionar item
 - Remover item
 - Editar item
-- Marcar item como concluído
-- Marcar item como não concluído
+- Marcar item como concluído/não concluído
