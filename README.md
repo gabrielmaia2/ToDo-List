@@ -9,3 +9,4 @@ Funcionalidades:
 - Remover item
 - Editar item
 - Marcar item como concluído/não concluído
+- Criar múltiplas listas diferentes
