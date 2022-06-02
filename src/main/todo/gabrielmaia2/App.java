@@ -20,7 +20,7 @@ public class App {
 
         list = new TodoList();
 
-        while (!command.equals("quit")) {
+        while (!(command.equals("quit") || command.equals("exit"))) {
             try {
                 loop();
             } catch (Exception e) {
@@ -57,6 +57,7 @@ public class App {
                 check();
                 break;
             default:
+                defa();
                 break;
         }
     }
@@ -95,5 +96,10 @@ public class App {
         int index = Integer.parseInt(reader.readLine());
         list.check(index);
         System.out.println("Item checked!");
+    }
+
+    void defa() {
+        if (!(command.equals("quit") || command.equals("exit")))
+            System.out.println("Unknown comamnd: \"" + command + "\", please try again.");
     }
 }
