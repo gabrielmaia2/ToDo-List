@@ -63,9 +63,7 @@ public class App {
     }
 
     void list() {
-        System.out.println("*Items*");
-        System.out.println(list.getItems());
-        System.out.println("*End*");
+        System.out.println(list);
     }
 
     void add() throws IOException {

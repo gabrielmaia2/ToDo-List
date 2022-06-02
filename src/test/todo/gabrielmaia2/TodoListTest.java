@@ -12,6 +12,43 @@ import org.junit.Test;
 
 public class TodoListTest {
     @Test
+    public void testGetDefaultListName() {
+        TodoList list = new TodoList();
+        String name = list.getName();
+
+        String expectedStr = "Main list";
+
+        assertEquals(expectedStr, name);
+
+        list = new TodoList(new ArrayList<>());
+        name = list.getName();
+
+        assertEquals(expectedStr, name);
+    }
+
+    @Test
+    public void testGetListName() {
+        TodoList list = new TodoList("Test list");
+        String name = list.getName();
+
+        String expectedStr = "Test list";
+
+        assertEquals(expectedStr, name);
+    }
+
+    @Test
+    public void testEditListName() {
+        TodoList list = new TodoList("Test list");
+        list.setName("New name");
+
+        String name = list.getName();
+
+        String expectedStr = "New name";
+
+        assertEquals(expectedStr, name);
+    }
+
+    @Test
     public void testGetItemsEmptyList() {
         TodoList list = new TodoList();
         String items = list.getItems();
@@ -308,5 +345,31 @@ public class TodoListTest {
         expectedStr += "[X] Eat a cake";
 
         assertEquals(expectedStr, itemsStr);
+    }
+
+    @Test
+    public void testToString() {
+        TodoList list = new TodoList("Test list");
+        String str = list.toString();
+
+        String expectedStr = "*Test list*\n";
+        expectedStr += "*List is empty*\n";
+        expectedStr += "*End*";
+
+        assertEquals(expectedStr, str);
+
+        ArrayList<TodoItem> items = new ArrayList<>();
+        items.add(new TodoItem("Do laundry", false));
+        items.add(new TodoItem("Clean house", true));
+
+        list = new TodoList("Test list", items);
+        str = list.toString();
+
+        expectedStr = "*Test list*\n";
+        expectedStr += "[ ] Do laundry\n";
+        expectedStr += "[X] Clean house\n";
+        expectedStr += "*End*";
+
+        assertEquals(expectedStr, str);
     }
 }
