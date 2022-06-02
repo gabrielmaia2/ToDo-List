@@ -32,6 +32,7 @@ public class App {
     void loop() throws IOException {
         System.out.println("");
         System.out.println("Commands:");
+        System.out.println("edit name: edit list name");
         System.out.println("list: List items");
         System.out.println("add: Add item");
         System.out.println("remove: Remove item");
@@ -41,6 +42,9 @@ public class App {
         command = reader.readLine();
 
         switch (command) {
+            case "edit name":
+                editName();
+                break;
             case "list":
                 list();
                 break;
@@ -60,6 +64,13 @@ public class App {
                 defa();
                 break;
         }
+    }
+
+    void editName() throws IOException {
+        System.out.println("Insert the new list name:");
+        String name = reader.readLine();
+        list.setName(name);
+        System.out.println("name edited!");
     }
 
     void list() {
