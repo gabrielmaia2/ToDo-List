@@ -74,7 +74,7 @@ public class TodoListTest {
     }
 
     @Test
-    public void testAddItemEmptyList() {
+    public void testAddItem() {
         TodoList list = new TodoList();
 
         list.add("Do laundry");
