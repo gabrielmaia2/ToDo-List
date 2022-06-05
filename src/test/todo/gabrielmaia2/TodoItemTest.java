@@ -46,23 +46,6 @@ public class TodoItemTest {
 
     @Test
     public void testCheckCheck() {
-        TodoItem item = new TodoItem("Do laundry", false);
-
-        assertEquals("[ ] Do laundry", item.toString());
-
-        item.check();
-
-        assertEquals("[X] Do laundry", item.toString());
-
-        item.check();
-        item.check();
-        item.check();
-
-        assertEquals("[ ] Do laundry", item.toString());
-    }
-
-    @Test
-    public void testCheckCheckMultipleTimes() {
         TodoItem item = new TodoItem("Do laundry", true);
 
         assertEquals("[X] Do laundry", item.toString());
