@@ -352,9 +352,10 @@ public class TodoListTest {
         TodoList list = new TodoList("Test list");
         String str = list.toString();
 
+        String expectedItems = Util.tabString("*List is empty*");
         String expectedStr = "*Test list*\n";
-        expectedStr += "*List is empty*\n";
-        expectedStr += "*End*";
+        expectedStr += expectedItems;
+        expectedStr += "\n*End*";
 
         assertEquals(expectedStr, str);
 
@@ -365,10 +366,12 @@ public class TodoListTest {
         list = new TodoList("Test list", items);
         str = list.toString();
 
+        expectedItems = "[ ] Do laundry\n";
+        expectedItems += "[X] Clean house";
+        expectedItems = Util.tabString(expectedItems);
         expectedStr = "*Test list*\n";
-        expectedStr += "[ ] Do laundry\n";
-        expectedStr += "[X] Clean house\n";
-        expectedStr += "*End*";
+        expectedStr += expectedItems;
+        expectedStr += "\n*End*";
 
         assertEquals(expectedStr, str);
     }

@@ -76,7 +76,7 @@ public class TodoList {
     @Override
     public String toString() {
         String res = "*" + getName() + "*\n";
-        res += getItems() + "\n";
+        res += Util.tabString(getItems()) + "\n";
         res += "*End*";
         return res;
     }
