@@ -8,7 +8,7 @@ Funcionalidades:
 - Criar lista
 - Remover lista
 - Ver todos os itens de todas as listas
-- Editar lista
+- Escolher lista
   - Editar nome da lista
   - Listar todos os itens
   - Adicionar item
