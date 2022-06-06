@@ -17,7 +17,7 @@ public class TodoItem {
         item = newItem;
     }
 
-    public boolean getChecked() {
+    public boolean isChecked() {
         return checked;
     }
 

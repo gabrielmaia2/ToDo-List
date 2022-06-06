@@ -1,8 +1,10 @@
-package main.todo.gabrielmaia2;
+package main.todo.gabrielmaia2.Views;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import main.todo.gabrielmaia2.TodoList;
 
 public class TodoListView {
     BufferedReader reader;
@@ -13,7 +15,7 @@ public class TodoListView {
         this.list = list;
     }
 
-    void run() {
+    public void run() {
         reader = new BufferedReader(new InputStreamReader(System.in));
         command = "";
 

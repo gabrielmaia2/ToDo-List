@@ -1,6 +1,7 @@
 package main.todo.gabrielmaia2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TodoList {
@@ -32,16 +33,15 @@ public class TodoList {
         this.name = name;
     }
 
-    public String getItems() {
+    public TodoItem getItem(int index) {
         if (items.isEmpty())
-            return "*List is empty*";
+            throw new IllegalStateException("Can't get item: List is empty.");
 
-        String res = items.get(0).toString();
-        for (TodoItem item : items.subList(1, items.size())) {
-            res += "\n" + item.toString();
-        }
+        return items.get(index);
+    }
 
-        return res;
+    public List<TodoItem> getItems() {
+        return Collections.unmodifiableList(items);
     }
 
     public void add(String item, boolean checked) {
@@ -73,10 +73,24 @@ public class TodoList {
         items.get(i).check();
     }
 
+    public String itemsToString() {
+        if (items.isEmpty()) {
+            return "*List is empty*";
+        }
+
+        String str = items.get(0).toString();
+        for (TodoItem item : items.subList(1, items.size())) {
+            str += "\n" + item.toString();
+        }
+        return str;
+    }
+
     @Override
     public String toString() {
+        String itemsStr = itemsToString();
+
         String res = "*" + getName() + "*\n";
-        res += Util.tabString(getItems()) + "\n";
+        res += Util.tabString(itemsStr) + "\n";
         res += "*End*";
         return res;
     }

@@ -1,62 +1,54 @@
 package test.todo.gabrielmaia2;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.*;
 
 import main.todo.gabrielmaia2.*;
 
-import org.junit.Test;
-
 public class TodoItemTest {
-    @Test
-    public void testCheckToString() {
-        TodoItem item = new TodoItem("Do laundry", false);
+    TodoItem item;
 
-        String res = item.toString();
-        String expectedStr = "[ ] Do laundry";
+    @BeforeEach
+    void setUp() {
+        item = new TodoItem("Do laundry", true);
+    }
 
-        assertEquals(expectedStr, res);
-
-        item = new TodoItem("Do homework", true);
-
-        res = item.toString();
-        expectedStr = "[X] Do homework";
-
-        assertEquals(expectedStr, res);
+    @AfterEach
+    void tearDown() {
     }
 
     @Test
-    public void testCheckGetters() {
-        TodoItem item = new TodoItem("Do laundry", true);
-
-        assertEquals("Do laundry", item.getItem());
-        assertEquals(true, item.getChecked());
-    }
-
-    @Test
-    public void testCheckSetItem() {
-        TodoItem item = new TodoItem("Do laundry", true);
-
-        assertEquals("[X] Do laundry", item.toString());
-
+    public void testGetSetItem() {
         item.setItem("Do homework");
-
-        assertEquals("[X] Do homework", item.toString());
-
+        assertEquals("Do homework", item.getItem());
     }
 
     @Test
-    public void testCheckCheck() {
-        TodoItem item = new TodoItem("Do laundry", true);
+    public void testIsChecked() {
+        assertEquals(true, item.isChecked());
+    }
 
-        assertEquals("[X] Do laundry", item.toString());
+    @Test
+    public void testCheck() {
+        item.check();
+        assertEquals(false, item.isChecked());
 
         item.check();
+        assertEquals(true, item.isChecked());
+
+        item.check();
+        assertEquals(false, item.isChecked());
+    }
+
+    @Test
+    public void testToStringUnchecked() {
+        item = new TodoItem("Do laundry", false);
         assertEquals("[ ] Do laundry", item.toString());
+    }
 
-        item.check();
+    @Test
+    public void testToStringChecked() {
         assertEquals("[X] Do laundry", item.toString());
-
-        item.check();
-        assertEquals("[ ] Do laundry", item.toString());
     }
 }

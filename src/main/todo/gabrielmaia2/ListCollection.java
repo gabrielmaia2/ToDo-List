@@ -21,18 +21,6 @@ public class ListCollection {
         return lists.get(index);
     }
 
-    public String getLists() {
-        if (lists.isEmpty())
-            return "*There are no lists*";
-
-        String res = lists.get(0).getName();
-        for (TodoList todoList : lists.subList(1, lists.size())) {
-            res += "\n" + todoList.getName();
-        }
-
-        return res;
-    }
-
     public void addList(TodoList list) {
         lists.add(list);
     }
@@ -44,9 +32,21 @@ public class ListCollection {
         lists.remove(index);
     }
 
+    public String listNamesToString() {
+        if (lists.isEmpty())
+            return "*There are no lists*";
+
+        String res = lists.get(0).getName();
+        for (TodoList todoList : lists.subList(1, lists.size())) {
+            res += "\n" + todoList.getName();
+        }
+
+        return res;
+    }
+
     public String toShortString() {
         String res = "*Lists*\n";
-        res += Util.tabString(getLists());
+        res += Util.tabString(listNamesToString());
         res += "\n*End*";
 
         return res;

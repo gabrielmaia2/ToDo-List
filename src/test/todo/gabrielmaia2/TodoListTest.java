@@ -1,124 +1,161 @@
 package test.todo.gabrielmaia2;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import main.todo.gabrielmaia2.*;
 
-import org.junit.Test;
-
 public class TodoListTest {
+    TodoList list;
+    List<TodoItem> items;
+    TodoItem item;
+
+    @BeforeEach
+    void setUp() {
+        items = new ArrayList<>();
+        items.add(new TodoItem("Do laundry", false));
+        items.add(new TodoItem("Clean house", true));
+        items.add(new TodoItem("Do homework", false));
+
+        list = new TodoList("Test list", items);
+        item = null;
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
+
+    @Test
+    public void testGetSetListName() {
+        list.setName("New name");
+        assertEquals("New name", list.getName());
+    }
+
     @Test
     public void testGetDefaultListName() {
-        TodoList list = new TodoList();
-        String name = list.getName();
-
-        String expectedStr = "Main list";
-
-        assertEquals(expectedStr, name);
+        list = new TodoList();
+        assertEquals("Main list", list.getName());
 
         list = new TodoList(new ArrayList<>());
-        name = list.getName();
-
-        assertEquals(expectedStr, name);
+        assertEquals("Main list", list.getName());
     }
 
     @Test
-    public void testGetListName() {
-        TodoList list = new TodoList("Test list");
-        String name = list.getName();
+    public void testGetItemEmptyList() {
+        list = new TodoList();
 
-        String expectedStr = "Test list";
+        Exception e = assertThrows(IllegalStateException.class, () -> {
+            list.getItem(0);
+        });
 
-        assertEquals(expectedStr, name);
+        String res = e.getMessage();
+        assertTrue(res.contains("Can't get item: List is empty."));
     }
 
     @Test
-    public void testEditListName() {
-        TodoList list = new TodoList("Test list");
-        list.setName("New name");
+    public void testGetItemOutOfBounds() {
+        String res = "";
 
-        String name = list.getName();
+        Exception e = assertThrows(IndexOutOfBoundsException.class, () -> {
+            list.getItem(-1);
+        });
 
-        String expectedStr = "New name";
+        res = e.getMessage();
+        assertTrue(res.contains("out of bounds"));
 
-        assertEquals(expectedStr, name);
+        e = assertThrows(IndexOutOfBoundsException.class, () -> {
+            list.getItem(3);
+        });
+
+        res = e.getMessage();
+        assertTrue(res.contains("out of bounds"));
+    }
+
+    @Test
+    public void testGetItem() {
+        TodoItem item = list.getItem(0);
+        TodoItem expected = items.get(0);
+        assertEquals(expected.getItem(), item.getItem());
+        assertEquals(expected.isChecked(), item.isChecked());
+
+        item = list.getItem(1);
+        expected = items.get(1);
+        assertEquals(expected.getItem(), item.getItem());
+        assertEquals(expected.isChecked(), item.isChecked());
+
+        item = list.getItem(2);
+        expected = items.get(2);
+        assertEquals(expected.getItem(), item.getItem());
+        assertEquals(expected.isChecked(), item.isChecked());
     }
 
     @Test
     public void testGetItemsEmptyList() {
-        TodoList list = new TodoList();
-        String items = list.getItems();
-
-        String expectedStr = "*List is empty*";
-
-        assertEquals(expectedStr, items);
+        list = new TodoList();
+        assertTrue(list.getItems().isEmpty());
     }
 
     @Test
     public void testGetItemsNonEmptyList() {
-        ArrayList<TodoItem> items = new ArrayList<>();
-        items.add(new TodoItem("Do laundry", false));
-        items.add(new TodoItem("Clean house", true));
+        items = list.getItems();
+        assertEquals(3, items.size());
 
-        TodoList list = new TodoList(items);
-        String itemsStr = list.getItems();
+        item = items.get(0);
+        assertEquals("Do laundry", item.getItem());
+        assertEquals(false, item.isChecked());
 
-        String expectedStr = "[ ] Do laundry\n";
-        expectedStr += "[X] Clean house";
+        item = items.get(1);
+        assertEquals("Clean house", item.getItem());
+        assertEquals(true, item.isChecked());
 
-        assertEquals(expectedStr, itemsStr);
+        item = items.get(2);
+        assertEquals("Do homework", item.getItem());
+        assertEquals(false, item.isChecked());
     }
 
     @Test
     public void testAddItem() {
-        TodoList list = new TodoList();
+        list = new TodoList();
 
         list.add("Do laundry");
-        String items = list.getItems();
+        items = list.getItems();
+        assertEquals(1, items.size());
 
-        String expectedStr = "[ ] Do laundry";
-
-        assertEquals(expectedStr, items);
+        item = items.get(0);
+        assertEquals("Do laundry", item.getItem());
+        assertEquals(false, item.isChecked());
 
         list.add("Clean house", true);
         items = list.getItems();
+        assertEquals(2, items.size());
 
-        expectedStr = "[ ] Do laundry\n";
-        expectedStr += "[X] Clean house";
+        item = items.get(0);
+        assertEquals("Do laundry", item.getItem());
+        assertEquals(false, item.isChecked());
 
-        assertEquals(expectedStr, items);
+        item = items.get(1);
+        assertEquals("Clean house", item.getItem());
+        assertEquals(true, item.isChecked());
     }
 
     @Test
     public void testRemoveItemEmptyList() {
-        TodoList list = new TodoList();
-
-        String res = "";
+        list = new TodoList();
 
         Exception e = assertThrows(IllegalStateException.class, () -> {
             list.remove(0);
         });
 
-        res = e.getMessage();
-
-        String expectedStr = "Can't remove item: List is empty.";
-
-        assertTrue(res.contains(expectedStr));
+        String res = e.getMessage();
+        assertTrue(res.contains("Can't remove item: List is empty."));
     }
 
     @Test
     public void testRemoveItemOutOfBounds() {
-        ArrayList<TodoItem> items = new ArrayList<>();
-        items.add(new TodoItem("Do laundry", false));
-        items.add(new TodoItem("Clean house", true));
-        items.add(new TodoItem("Do homework", false));
-
-        TodoList list = new TodoList(items);
-
         String res = "";
 
         Exception e = assertThrows(IndexOutOfBoundsException.class, () -> {
@@ -126,7 +163,6 @@ public class TodoListTest {
         });
 
         res = e.getMessage();
-
         assertTrue(res.contains("out of bounds"));
 
         e = assertThrows(IndexOutOfBoundsException.class, () -> {
@@ -134,71 +170,53 @@ public class TodoListTest {
         });
 
         res = e.getMessage();
-
         assertTrue(res.contains("out of bounds"));
     }
 
     @Test
     public void testRemoveItems() {
-        ArrayList<TodoItem> items = new ArrayList<>();
-        items.add(new TodoItem("Do laundry", false));
-        items.add(new TodoItem("Clean house", true));
-        items.add(new TodoItem("Do homework", false));
-
-        TodoList list = new TodoList(items);
-
         list.remove(0);
 
-        String itemsStr = list.getItems();
+        items = list.getItems();
+        assertEquals(2, items.size());
 
-        String expectedStr = "[X] Clean house\n";
-        expectedStr += "[ ] Do homework";
+        item = items.get(0);
+        assertEquals("Clean house", item.getItem());
+        assertEquals(true, item.isChecked());
 
-        assertEquals(expectedStr, itemsStr);
+        item = items.get(1);
+        assertEquals("Do homework", item.getItem());
+        assertEquals(false, item.isChecked());
 
         list.remove(1);
 
-        itemsStr = list.getItems();
+        items = list.getItems();
+        assertEquals(1, items.size());
 
-        expectedStr = "[X] Clean house";
-
-        assertEquals(expectedStr, itemsStr);
+        item = items.get(0);
+        assertEquals("Clean house", item.getItem());
+        assertEquals(true, item.isChecked());
 
         list.remove(0);
 
-        itemsStr = list.getItems();
-
-        expectedStr = "*List is empty*";
-
-        assertEquals(expectedStr, itemsStr);
+        items = list.getItems();
+        assertTrue(items.isEmpty());
     }
 
     @Test
     public void testEditItemEmptyList() {
-        TodoList list = new TodoList();
-
-        String res = "";
+        list = new TodoList();
 
         Exception e = assertThrows(IllegalStateException.class, () -> {
             list.edit(0, "Do homework");
         });
 
-        res = e.getMessage();
-
-        String expectedStr = "Can't edit item: List is empty.";
-
-        assertTrue(res.contains(expectedStr));
+        String res = e.getMessage();
+        assertTrue(res.contains("Can't edit item: List is empty."));
     }
 
     @Test
     public void testEditItemIndexOutOfBounds() {
-        ArrayList<TodoItem> items = new ArrayList<>();
-        items.add(new TodoItem("Do laundry", false));
-        items.add(new TodoItem("Clean house", true));
-        items.add(new TodoItem("Do homework", false));
-
-        TodoList list = new TodoList(items);
-
         String res = "";
 
         Exception e = assertThrows(IndexOutOfBoundsException.class, () -> {
@@ -206,7 +224,6 @@ public class TodoListTest {
         });
 
         res = e.getMessage();
-
         assertTrue(res.contains("out of bounds"));
 
         e = assertThrows(IndexOutOfBoundsException.class, () -> {
@@ -214,57 +231,43 @@ public class TodoListTest {
         });
 
         res = e.getMessage();
-
         assertTrue(res.contains("out of bounds"));
     }
 
     @Test
     public void testEditItem() {
-        ArrayList<TodoItem> items = new ArrayList<>();
-        items.add(new TodoItem("Do laundry", false));
-        items.add(new TodoItem("Clean house", true));
-        items.add(new TodoItem("Do homework", true));
-
-        TodoList list = new TodoList(items);
-
         list.edit(0, "Eat a cake");
-        list.edit(2, "Be happier");
+        list.edit(1, "Be happier");
 
-        String itemsStr = list.getItems();
+        items = list.getItems();
 
-        String expectedStr = "[ ] Eat a cake\n";
-        expectedStr += "[X] Clean house\n";
-        expectedStr += "[X] Be happier";
+        item = items.get(0);
+        assertEquals("Eat a cake", item.getItem());
+        assertEquals(false, item.isChecked());
 
-        assertEquals(expectedStr, itemsStr);
+        item = items.get(1);
+        assertEquals("Be happier", item.getItem());
+        assertEquals(true, item.isChecked());
+
+        item = items.get(2);
+        assertEquals("Do homework", item.getItem());
+        assertEquals(false, item.isChecked());
     }
 
     @Test
     public void testCheckItemEmptyList() {
         TodoList list = new TodoList();
 
-        String res = "";
-
         Exception e = assertThrows(IllegalStateException.class, () -> {
             list.check(0);
         });
 
-        res = e.getMessage();
-
-        String expectedStr = "Can't check item: List is empty.";
-
-        assertTrue(res.contains(expectedStr));
+        String res = e.getMessage();
+        assertTrue(res.contains("Can't check item: List is empty."));
     }
 
     @Test
     public void testCheckItemIndexOutOfBounds() {
-        ArrayList<TodoItem> items = new ArrayList<>();
-        items.add(new TodoItem("Do laundry", false));
-        items.add(new TodoItem("Clean house", true));
-        items.add(new TodoItem("Do homework", false));
-
-        TodoList list = new TodoList(items);
-
         String res = "";
 
         Exception e = assertThrows(IndexOutOfBoundsException.class, () -> {
@@ -272,7 +275,6 @@ public class TodoListTest {
         });
 
         res = e.getMessage();
-
         assertTrue(res.contains("out of bounds"));
 
         e = assertThrows(IndexOutOfBoundsException.class, () -> {
@@ -280,97 +282,92 @@ public class TodoListTest {
         });
 
         res = e.getMessage();
-
         assertTrue(res.contains("out of bounds"));
     }
 
     @Test
     public void testCheckItem() {
-        ArrayList<TodoItem> items = new ArrayList<>();
-        items.add(new TodoItem("Do laundry", false));
-        items.add(new TodoItem("Clean house", false));
-        items.add(new TodoItem("Do homework", false));
-
-        TodoList list = new TodoList(items);
-
         list.check(0);
         list.check(2);
 
-        String itemsStr = list.getItems();
+        items = list.getItems();
 
-        String expectedStr = "[X] Do laundry\n";
-        expectedStr += "[ ] Clean house\n";
-        expectedStr += "[X] Do homework";
+        item = items.get(0);
+        assertEquals("Do laundry", item.getItem());
+        assertEquals(true, item.isChecked());
 
-        assertEquals(expectedStr, itemsStr);
+        item = items.get(1);
+        assertEquals("Clean house", item.getItem());
+        assertEquals(true, item.isChecked());
+
+        item = items.get(2);
+        assertEquals("Do homework", item.getItem());
+        assertEquals(true, item.isChecked());
     }
 
     @Test
     public void testCheckItemMultipleTimes() {
-        ArrayList<TodoItem> items = new ArrayList<>();
-        items.add(new TodoItem("Do laundry", false));
-        items.add(new TodoItem("Clean house", true));
-        items.add(new TodoItem("Do homework", false));
-
-        TodoList list = new TodoList(items);
-
         list.check(0);
         list.check(2);
         list.check(1);
         list.check(1);
         list.check(0);
 
-        String itemsStr = list.getItems();
+        items = list.getItems();
 
-        String expectedStr = "[ ] Do laundry\n";
-        expectedStr += "[X] Clean house\n";
-        expectedStr += "[X] Do homework";
+        item = items.get(0);
+        assertEquals("Do laundry", item.getItem());
+        assertEquals(false, item.isChecked());
 
-        assertEquals(expectedStr, itemsStr);
+        item = items.get(1);
+        assertEquals("Clean house", item.getItem());
+        assertEquals(true, item.isChecked());
+
+        item = items.get(2);
+        assertEquals("Do homework", item.getItem());
+        assertEquals(true, item.isChecked());
     }
 
     @Test
-    public void testEditCheckedItem() {
-        ArrayList<TodoItem> items = new ArrayList<>();
-        items.add(new TodoItem("Do laundry", false));
-        items.add(new TodoItem("Clean house", true));
+    public void testItemsToStringEmptyList() {
+        list = new TodoList("Test list");
+        String str = list.itemsToString();
 
-        TodoList list = new TodoList(items);
+        assertEquals("*List is empty*", str);
+    }
 
-        list.edit(1, "Eat a cake");
-
-        String itemsStr = list.getItems();
+    @Test
+    public void testItemsToString() {
+        String str = list.itemsToString();
 
         String expectedStr = "[ ] Do laundry\n";
-        expectedStr += "[X] Eat a cake";
+        expectedStr += "[X] Clean house\n";
+        expectedStr += "[ ] Do homework";
 
-        assertEquals(expectedStr, itemsStr);
+        assertEquals(expectedStr, str);
+    }
+
+    @Test
+    public void testToStringEmptyList() {
+        list = new TodoList("Test list");
+        String str = list.toString();
+
+        String expectedStr = "*Test list*\n";
+        expectedStr += Util.tabString("*List is empty*");
+        expectedStr += "\n*End*";
+
+        assertEquals(expectedStr, str);
     }
 
     @Test
     public void testToString() {
-        TodoList list = new TodoList("Test list");
         String str = list.toString();
 
-        String expectedItems = Util.tabString("*List is empty*");
+        String expectedItems = list.getItem(0).toString() + "\n";
+        expectedItems += list.getItem(1).toString() + "\n";
+        expectedItems += list.getItem(2).toString();
         String expectedStr = "*Test list*\n";
-        expectedStr += expectedItems;
-        expectedStr += "\n*End*";
-
-        assertEquals(expectedStr, str);
-
-        ArrayList<TodoItem> items = new ArrayList<>();
-        items.add(new TodoItem("Do laundry", false));
-        items.add(new TodoItem("Clean house", true));
-
-        list = new TodoList("Test list", items);
-        str = list.toString();
-
-        expectedItems = "[ ] Do laundry\n";
-        expectedItems += "[X] Clean house";
-        expectedItems = Util.tabString(expectedItems);
-        expectedStr = "*Test list*\n";
-        expectedStr += expectedItems;
+        expectedStr += Util.tabString(expectedItems);
         expectedStr += "\n*End*";
 
         assertEquals(expectedStr, str);

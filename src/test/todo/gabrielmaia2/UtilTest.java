@@ -1,10 +1,10 @@
 package test.todo.gabrielmaia2;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.*;
 
 import main.todo.gabrielmaia2.*;
-
-import org.junit.Test;
 
 public class UtilTest {
     @Test
