@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
 import main.todo.gabrielmaia2.*;
+import main.todo.gabrielmaia2.models.TodoItem;
 
 public class TodoItemTest {
     TodoItem item;

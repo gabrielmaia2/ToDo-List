@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
 import main.todo.gabrielmaia2.*;
+import main.todo.gabrielmaia2.models.ListCollection;
+import main.todo.gabrielmaia2.models.TodoList;
 
 import java.util.ArrayList;
 import java.util.List;

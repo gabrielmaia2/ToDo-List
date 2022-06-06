@@ -1,4 +1,4 @@
-package main.todo.gabrielmaia2;
+package main.todo.gabrielmaia2.models;
 
 public class TodoItem {
     private String item;

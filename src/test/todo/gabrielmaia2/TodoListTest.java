@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.todo.gabrielmaia2.*;
+import main.todo.gabrielmaia2.models.TodoItem;
+import main.todo.gabrielmaia2.models.TodoList;
 
 public class TodoListTest {
     TodoList list;

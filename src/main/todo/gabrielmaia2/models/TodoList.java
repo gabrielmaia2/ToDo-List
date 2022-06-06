@@ -1,8 +1,10 @@
-package main.todo.gabrielmaia2;
+package main.todo.gabrielmaia2.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import main.todo.gabrielmaia2.Util;
 
 public class TodoList {
     private List<TodoItem> items;

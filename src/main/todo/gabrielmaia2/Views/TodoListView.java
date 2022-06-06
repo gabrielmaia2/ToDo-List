@@ -1,10 +1,10 @@
-package main.todo.gabrielmaia2.Views;
+package main.todo.gabrielmaia2.views;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import main.todo.gabrielmaia2.TodoList;
+import main.todo.gabrielmaia2.models.TodoList;
 
 public class TodoListView {
     BufferedReader reader;
